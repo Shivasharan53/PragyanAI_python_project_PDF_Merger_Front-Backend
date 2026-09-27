@@ -1,21 +1,26 @@
-```javascript
-// ==========================================
-// PRAGYANAI PDF STUDIO
-// ==========================================
+/* ======================================
+   PRAGYANAI PDF STUDIO
+   COMPLETE FRONTEND JAVASCRIPT
+====================================== */
+
+
+/* ======================================
+   BACKEND URL
+====================================== */
 
 const API_URL =
     "https://pragyanai-python-project-pdf-merger.onrender.com";
 
 
-// ==========================================
-// HTML ELEMENTS
-// ==========================================
-
-const fileInput =
-    document.getElementById("fileInput");
+/* ======================================
+   ELEMENTS
+====================================== */
 
 const browseBtn =
     document.getElementById("browseBtn");
+
+const fileInput =
+    document.getElementById("fileInput");
 
 const dropZone =
     document.getElementById("dropZone");
@@ -31,6 +36,9 @@ const clearBtn =
 
 const mergeBtn =
     document.getElementById("mergeBtn");
+
+const mergeText =
+    document.getElementById("mergeText");
 
 const successMessage =
     document.getElementById("successMessage");
@@ -48,196 +56,220 @@ const downloadBtn =
     document.getElementById("downloadBtn");
 
 
-// ==========================================
-// FILE STORAGE
-// ==========================================
+/* ======================================
+   FILE STORAGE
+====================================== */
 
 let selectedFiles = [];
 
-let mergedPDFUrl = null;
+let mergedPdfBlob = null;
+
+let mergedPdfUrl = null;
 
 
-// ==========================================
-// ADD / CHOOSE FILES
-// ==========================================
+/* ======================================
+   SUPPORTED FILES
+====================================== */
 
-browseBtn.addEventListener(
-    "click",
-    function (event) {
+const allowedTypes = [
+    "application/pdf",
+    "image/jpeg",
+    "image/png"
+];
 
-        event.preventDefault();
 
-        fileInput.click();
+/* ======================================
+   INITIAL STATE
+====================================== */
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    updateFileList();
+
+});
+
+
+/* ======================================
+   CHOOSE FILES BUTTON
+====================================== */
+
+browseBtn.addEventListener("click", (event) => {
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
+    fileInput.click();
+
+});
+
+
+/* ======================================
+   FILE INPUT CHANGE
+====================================== */
+
+fileInput.addEventListener("change", (event) => {
+
+    const files = Array.from(event.target.files);
+
+    addFiles(files);
+
+    /*
+       Important:
+       Clear input value so selecting
+       the same file again works.
+    */
+
+    fileInput.value = "";
+
+});
+
+
+/* ======================================
+   DROP ZONE CLICK
+====================================== */
+
+dropZone.addEventListener("click", (event) => {
+
+    /*
+       Don't trigger twice when
+       Choose Files button is clicked.
+    */
+
+    if (event.target === browseBtn) {
+        return;
     }
-);
+
+    fileInput.click();
+
+});
 
 
-// ==========================================
-// FILE INPUT
-// ==========================================
+/* ======================================
+   DRAG OVER
+====================================== */
 
-fileInput.addEventListener(
-    "change",
-    function () {
+dropZone.addEventListener("dragover", (event) => {
 
-        if (!fileInput.files) {
-            return;
-        }
+    event.preventDefault();
 
-        addFiles(fileInput.files);
+    event.stopPropagation();
 
-        // Allows selecting the same file again
-        fileInput.value = "";
+    dropZone.classList.add("dragover");
 
-    }
-);
+});
 
 
-// ==========================================
-// DRAG OVER
-// ==========================================
+/* ======================================
+   DRAG LEAVE
+====================================== */
 
-dropZone.addEventListener(
-    "dragover",
-    function (event) {
+dropZone.addEventListener("dragleave", (event) => {
 
-        event.preventDefault();
+    event.preventDefault();
 
-        dropZone.classList.add(
-            "dragover"
-        );
+    dropZone.classList.remove("dragover");
 
-    }
-);
+});
 
 
-// ==========================================
-// DRAG LEAVE
-// ==========================================
+/* ======================================
+   DROP
+====================================== */
 
-dropZone.addEventListener(
-    "dragleave",
-    function () {
+dropZone.addEventListener("drop", (event) => {
 
-        dropZone.classList.remove(
-            "dragover"
-        );
+    event.preventDefault();
 
-    }
-);
+    event.stopPropagation();
 
+    dropZone.classList.remove("dragover");
 
-// ==========================================
-// DROP FILES
-// ==========================================
+    const files =
+        Array.from(event.dataTransfer.files);
 
-dropZone.addEventListener(
-    "drop",
-    function (event) {
+    addFiles(files);
 
-        event.preventDefault();
-
-        dropZone.classList.remove(
-            "dragover"
-        );
-
-        addFiles(
-            event.dataTransfer.files
-        );
-
-    }
-);
+});
 
 
-// ==========================================
-// ADD FILES
-// ==========================================
+/* ======================================
+   ADD FILES
+====================================== */
 
 function addFiles(files) {
 
-    let added = 0;
-
-
-    for (
-        const file of files
-    ) {
-
-        const extension =
-            file.name
-                .split(".")
-                .pop()
-                .toLowerCase();
-
-
-        const allowed =
-            [
-                "pdf",
-                "jpg",
-                "jpeg",
-                "png"
-            ];
-
-
-        // Check format
-        if (
-            !allowed.includes(
-                extension
-            )
-        ) {
-
-            showMessage(
-                file.name +
-                " is not supported.",
-                false
-            );
-
-            continue;
-
-        }
-
-
-        // Check duplicate
-        const duplicate =
-            selectedFiles.some(
-                function (oldFile) {
-
-                    return (
-                        oldFile.name ===
-                        file.name &&
-
-                        oldFile.size ===
-                        file.size
-                    );
-
-                }
-            );
-
-
-        if (duplicate) {
-
-            continue;
-
-        }
-
-
-        selectedFiles.push(file);
-
-        added++;
-
+    if (!files || files.length === 0) {
+        return;
     }
 
 
-    renderFiles();
+    let addedCount = 0;
 
 
-    if (added > 0) {
+    files.forEach((file) => {
+
+        /*
+           Check file type
+        */
+
+        const isValid =
+            allowedTypes.includes(file.type) ||
+            /\.(pdf|jpg|jpeg|png)$/i.test(file.name);
+
+
+        if (!isValid) {
+
+            showMessage(
+                `Unsupported file: ${file.name}`,
+                false
+            );
+
+            return;
+        }
+
+
+        /*
+           Prevent duplicate files
+        */
+
+        const alreadyExists =
+            selectedFiles.some(
+                existingFile =>
+                    existingFile.name === file.name &&
+                    existingFile.size === file.size &&
+                    existingFile.lastModified === file.lastModified
+            );
+
+
+        if (alreadyExists) {
+
+            return;
+        }
+
+
+        /*
+           Add file
+        */
+
+        selectedFiles.push(file);
+
+        addedCount++;
+
+    });
+
+
+    /*
+       Update UI
+    */
+
+    updateFileList();
+
+
+    if (addedCount > 0) {
 
         showMessage(
-            added +
-            (added === 1
-                ? " file added successfully."
-                : " files added successfully."),
+            `${addedCount} file${addedCount > 1 ? "s" : ""} added successfully`,
             true
         );
 
@@ -246,11 +278,11 @@ function addFiles(files) {
 }
 
 
-// ==========================================
-// RENDER FILES
-// ==========================================
+/* ======================================
+   UPDATE FILE LIST
+====================================== */
 
-function renderFiles() {
+function updateFileList() {
 
     fileList.innerHTML = "";
 
@@ -260,233 +292,751 @@ function renderFiles() {
 
 
     mergeBtn.disabled =
-        selectedFiles.length === 0;
+        selectedFiles.length < 2;
 
 
-    selectedFiles.forEach(
-        function (file, index) {
+    if (selectedFiles.length === 0) {
 
-            const item =
-                document.createElement(
-                    "div"
-                );
+        mergedFileArea.classList.remove("show");
 
-
-            item.className =
-                "file-item";
+        return;
+    }
 
 
-            item.dataset.index =
-                index;
+    selectedFiles.forEach((file, index) => {
+
+        const item =
+            createFileItem(file, index);
+
+        fileList.appendChild(item);
+
+    });
+
+}
 
 
-            item.draggable =
-                true;
+/* ======================================
+   CREATE FILE ITEM
+====================================== */
+
+function createFileItem(file, index) {
+
+    const item =
+        document.createElement("div");
+
+    item.className = "file-item";
 
 
-            // ==================================
-            // FILE ICON
-            // ==================================
+    /* FILE ICON */
 
-            let icon = "📄";
+    const icon =
+        document.createElement("div");
+
+    icon.className = "file-icon";
+
+    icon.textContent =
+        file.type === "application/pdf"
+            ? "📄"
+            : "🖼️";
 
 
-            if (
-                file.type.startsWith(
-                    "image/"
-                )
-            ) {
+    /* FILE INFO */
 
-                icon = "🖼️";
+    const info =
+        document.createElement("div");
+
+    info.className = "file-info";
+
+
+    const name =
+        document.createElement("div");
+
+    name.className = "file-name";
+
+    name.textContent =
+        `${index + 1}. ${file.name}`;
+
+
+    const size =
+        document.createElement("div");
+
+    size.className = "file-size";
+
+    size.textContent =
+        formatFileSize(file.size);
+
+
+    info.appendChild(name);
+
+    info.appendChild(size);
+
+
+    /* BUTTONS */
+
+    const buttons =
+        document.createElement("div");
+
+    buttons.className = "file-buttons";
+
+
+    /* MOVE UP */
+
+    const upBtn =
+        document.createElement("button");
+
+    upBtn.type = "button";
+
+    upBtn.className = "move-file";
+
+    upBtn.innerHTML = "↑";
+
+    upBtn.title = "Move Up";
+
+    upBtn.disabled =
+        index === 0;
+
+
+    upBtn.addEventListener("click", (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        moveFileUp(index);
+
+    });
+
+
+    /* MOVE DOWN */
+
+    const downBtn =
+        document.createElement("button");
+
+    downBtn.type = "button";
+
+    downBtn.className = "move-file";
+
+    downBtn.innerHTML = "↓";
+
+    downBtn.title = "Move Down";
+
+    downBtn.disabled =
+        index === selectedFiles.length - 1;
+
+
+    downBtn.addEventListener("click", (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        moveFileDown(index);
+
+    });
+
+
+    /* VIEW */
+
+    const viewBtn =
+        document.createElement("button");
+
+    viewBtn.type = "button";
+
+    viewBtn.className = "view-file";
+
+    viewBtn.innerHTML = "👁 View";
+
+
+    viewBtn.addEventListener("click", (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        viewFile(file);
+
+    });
+
+
+    /* REMOVE */
+
+    const removeBtn =
+        document.createElement("button");
+
+    removeBtn.type = "button";
+
+    removeBtn.className = "remove-file";
+
+    removeBtn.innerHTML = "✕ Remove";
+
+
+    removeBtn.addEventListener("click", (event) => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        removeFile(index);
+
+    });
+
+
+    buttons.appendChild(upBtn);
+
+    buttons.appendChild(downBtn);
+
+    buttons.appendChild(viewBtn);
+
+    buttons.appendChild(removeBtn);
+
+
+    item.appendChild(icon);
+
+    item.appendChild(info);
+
+    item.appendChild(buttons);
+
+
+    return item;
+
+}
+
+
+/* ======================================
+   MOVE FILE UP
+====================================== */
+
+function moveFileUp(index) {
+
+    if (index <= 0) {
+        return;
+    }
+
+
+    /*
+       Swap files
+    */
+
+    const temp =
+        selectedFiles[index - 1];
+
+    selectedFiles[index - 1] =
+        selectedFiles[index];
+
+    selectedFiles[index] =
+        temp;
+
+
+    updateFileList();
+
+
+    showMessage(
+        "File moved up successfully",
+        true
+    );
+
+}
+
+
+/* ======================================
+   MOVE FILE DOWN
+====================================== */
+
+function moveFileDown(index) {
+
+    if (index >= selectedFiles.length - 1) {
+        return;
+    }
+
+
+    /*
+       Swap files
+    */
+
+    const temp =
+        selectedFiles[index + 1];
+
+    selectedFiles[index + 1] =
+        selectedFiles[index];
+
+    selectedFiles[index] =
+        temp;
+
+
+    updateFileList();
+
+
+    showMessage(
+        "File moved down successfully",
+        true
+    );
+
+}
+
+
+/* ======================================
+   REMOVE FILE
+====================================== */
+
+function removeFile(index) {
+
+    const removedFile =
+        selectedFiles[index];
+
+
+    selectedFiles.splice(index, 1);
+
+
+    updateFileList();
+
+
+    showMessage(
+        `${removedFile.name} removed`,
+        true
+    );
+
+}
+
+
+/* ======================================
+   CLEAR ALL
+====================================== */
+
+clearBtn.addEventListener("click", () => {
+
+    if (selectedFiles.length === 0) {
+
+        showMessage(
+            "No files to clear",
+            false
+        );
+
+        return;
+    }
+
+
+    selectedFiles = [];
+
+
+    fileInput.value = "";
+
+
+    updateFileList();
+
+
+    mergedPdfBlob = null;
+
+
+    if (mergedPdfUrl) {
+
+        URL.revokeObjectURL(
+            mergedPdfUrl
+        );
+
+        mergedPdfUrl = null;
+
+    }
+
+
+    mergedFileArea.classList.remove("show");
+
+
+    showMessage(
+        "All files cleared successfully",
+        true
+    );
+
+});
+
+
+/* ======================================
+   VIEW ORIGINAL FILE
+====================================== */
+
+function viewFile(file) {
+
+    const url =
+        URL.createObjectURL(file);
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+
+    /*
+       Release object URL later
+    */
+
+    setTimeout(() => {
+
+        URL.revokeObjectURL(url);
+
+    }, 60000);
+
+}
+
+
+/* ======================================
+   MERGE BUTTON
+====================================== */
+
+mergeBtn.addEventListener("click", async () => {
+
+    if (selectedFiles.length < 2) {
+
+        showMessage(
+            "Please select at least 2 files",
+            false
+        );
+
+        return;
+    }
+
+
+    /*
+       Disable button while processing
+    */
+
+    mergeBtn.disabled = true;
+
+    mergeText.textContent =
+        "Merging...";
+
+
+    showMessage(
+        "Creating your merged PDF...",
+        true
+    );
+
+
+    try {
+
+        const formData =
+            new FormData();
+
+
+        /*
+           IMPORTANT:
+           Files are appended in the
+           exact order shown on screen.
+        */
+
+        selectedFiles.forEach((file) => {
+
+            formData.append(
+                "files",
+                file
+            );
+
+        });
+
+
+        /*
+           Send files to FastAPI
+        */
+
+        const response =
+            await fetch(
+                `${API_URL}/merge`,
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        if (!response.ok) {
+
+            let errorMessage =
+                "Failed to merge files";
+
+
+            try {
+
+                const errorData =
+                    await response.json();
+
+                if (errorData.detail) {
+
+                    errorMessage =
+                        errorData.detail;
+
+                }
+
+            } catch (error) {
+
+                /*
+                   Ignore JSON parsing error
+                */
 
             }
 
 
-            // ==================================
-            // FILE ITEM
-            // ==================================
+            throw new Error(
+                errorMessage
+            );
 
-            item.innerHTML = `
-
-                <div class="file-icon">
-                    ${icon}
-                </div>
+        }
 
 
-                <div class="file-info">
+        /*
+           Get merged PDF
+        */
 
-                    <div class="file-name">
-                        ${escapeHtml(file.name)}
-                    </div>
-
-                    <div class="file-size">
-                        ${formatSize(file.size)}
-                    </div>
-
-                </div>
+        mergedPdfBlob =
+            await response.blob();
 
 
-                <div class="file-buttons">
+        /*
+           Create browser URL
+        */
 
-                    <button
-                        type="button"
-                        class="view-file">
+        if (mergedPdfUrl) {
 
-                        👁 View
+            URL.revokeObjectURL(
+                mergedPdfUrl
+            );
 
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="move-up"
-                        ${index === 0 ? "disabled" : ""}>
-
-                        ↑ Up
-
-                    </button>
+        }
 
 
-                    <button
-                        type="button"
-                        class="move-down"
-                        ${
-                            index ===
-                            selectedFiles.length - 1
-                                ? "disabled"
-                                : ""
-                        }>
-
-                        ↓ Down
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="remove-file">
-
-                        🗑 Remove
-
-                    </button>
-
-                </div>
-
-            `;
-
-
-            // ==================================
-            // VIEW
-            // ==================================
-
-            const viewButton =
-                item.querySelector(
-                    ".view-file"
-                );
-
-
-            viewButton.addEventListener(
-                "click",
-                function (event) {
-
-                    event.stopPropagation();
-
-
-                    const url =
-                        URL.createObjectURL(
-                            file
-                        );
-
-
-                    window.open(
-                        url,
-                        "_blank"
-                    );
-
-                }
+        mergedPdfUrl =
+            URL.createObjectURL(
+                mergedPdfBlob
             );
 
 
-            // ==================================
-            // MOVE UP
-            // ==================================
+        /*
+           Show merged area
+        */
 
-            const upButton =
-                item.querySelector(
-                    ".move-up"
-                );
-
-
-            upButton.addEventListener(
-                "click",
-                function (event) {
-
-                    event.stopPropagation();
+        mergedFileArea.classList.add(
+            "show"
+        );
 
 
-                    if (index === 0) {
-                        return;
-                    }
+        showMessage(
+            "PDF merged successfully!",
+            true
+        );
 
 
-                    const temp =
-                        selectedFiles[
-                            index - 1
-                        ];
+    } catch (error) {
+
+        console.error(
+            "Merge Error:",
+            error
+        );
 
 
-                    selectedFiles[
-                        index - 1
-                    ] =
-                        selectedFiles[index];
+        showMessage(
+            `Merge failed: ${error.message}`,
+            false
+        );
 
 
-                    selectedFiles[index] =
-                        temp;
+    } finally {
+
+        mergeText.textContent =
+            "Merge Files";
 
 
-                    renderFiles();
+        mergeBtn.disabled =
+            selectedFiles.length < 2;
 
-                }
+    }
+
+});
+
+
+/* ======================================
+   VIEW MERGED PDF
+====================================== */
+
+viewMergedBtn.addEventListener(
+    "click",
+    () => {
+
+        if (!mergedPdfUrl) {
+
+            showMessage(
+                "No merged PDF available",
+                false
+            );
+
+            return;
+        }
+
+
+        window.open(
+            mergedPdfUrl,
+            "_blank"
+        );
+
+    }
+);
+
+
+/* ======================================
+   DOWNLOAD MERGED PDF
+====================================== */
+
+downloadBtn.addEventListener(
+    "click",
+    () => {
+
+        if (!mergedPdfBlob) {
+
+            showMessage(
+                "No merged PDF available",
+                false
+            );
+
+            return;
+        }
+
+
+        const url =
+            URL.createObjectURL(
+                mergedPdfBlob
             );
 
 
-            // ==================================
-            // MOVE DOWN
-            // ==================================
-
-            const downButton =
-                item.querySelector(
-                    ".move-down"
-                );
+        const link =
+            document.createElement("a");
 
 
-            downButton.addEventListener(
-                "click",
-                function (event) {
+        link.href = url;
 
-                    event.stopPropagation();
-
-
-                    if (
-                        index ===
-                        selectedFiles.length - 1
-                    ) {
-
-                        return;
-
-                    }
+        link.download =
+            "PragyanAI_Merged.pdf";
 
 
-                    const temp =
-                        selectedFiles[
-                            index + 1
-                        ];
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
 
 
-                    selectedFiles[
-                        index + 1
-                    ] =
-                        selectedFiles[index];
+        setTimeout(() => {
 
-```
+            URL.revokeObjectURL(url);
+
+        }, 1000);
+
+
+        showMessage(
+            "Download started successfully",
+            true
+        );
+
+    }
+);
+
+
+/* ======================================
+   FORMAT FILE SIZE
+====================================== */
+
+function formatFileSize(bytes) {
+
+    if (bytes === 0) {
+        return "0 Bytes";
+    }
+
+
+    const units = [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+
+    const index =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+
+    return (
+        parseFloat(
+            (
+                bytes /
+                Math.pow(1024, index)
+            ).toFixed(2)
+        ) +
+        " " +
+        units[index]
+    );
+
+}
+
+
+/* ======================================
+   SUCCESS / ERROR MESSAGE
+====================================== */
+
+function showMessage(
+    message,
+    success = true
+) {
+
+    successText.textContent =
+        message;
+
+
+    if (success) {
+
+        successMessage.style.background =
+            "#ecfdf5";
+
+        successMessage.style.borderColor =
+            "#bbf7d0";
+
+        successMessage.style.color =
+            "#15803d";
+
+    } else {
+
+        successMessage.style.background =
+            "#fef2f2";
+
+        successMessage.style.borderColor =
+            "#fecaca";
+
+        successMessage.style.color =
+            "#dc2626";
+
+    }
+
+
+    successMessage.classList.add(
+        "show"
+    );
+
+
+    /*
+       Automatically hide message
+       after 4 seconds
+    */
+
+    clearTimeout(
+        window.messageTimer
+    );
+
+
+    window.messageTimer =
+        setTimeout(() => {
+
+            successMessage.classList.remove(
+                "show"
+            );
+
+        }, 4000);
+
+}
