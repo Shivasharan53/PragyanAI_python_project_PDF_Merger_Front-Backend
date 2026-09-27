@@ -18,6 +18,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://shiva-pdfmerge-project.netlify.app",
         "https://pdf-image-merge-project.netlify.app",
         "http://localhost:5500",
         "http://127.0.0.1:5500"
@@ -41,7 +42,7 @@ def home():
 
 
 # ======================================
-# MERGE
+# MERGE FILES
 # ======================================
 
 @app.post("/merge")
@@ -60,6 +61,10 @@ async def merge_files(
     writer = PdfWriter()
 
 
+    # ==================================
+    # PROCESS FILES IN RECEIVED ORDER
+    # ==================================
+
     for uploaded_file in files:
 
         filename = (
@@ -67,8 +72,7 @@ async def merge_files(
         ).lower()
 
 
-        file_bytes =
-            await uploaded_file.read()
+        file_bytes = await uploaded_file.read()
 
 
         # ==================================
@@ -89,11 +93,14 @@ async def merge_files(
                     writer.add_page(page)
 
 
-            except Exception as error:
+            except Exception:
 
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Invalid PDF: {uploaded_file.filename}"
+                    detail=(
+                        f"Invalid PDF: "
+                        f"{uploaded_file.filename}"
+                    )
                 )
 
 
@@ -107,10 +114,9 @@ async def merge_files(
 
             try:
 
-                image =
-                    Image.open(
-                        io.BytesIO(file_bytes)
-                    )
+                image = Image.open(
+                    io.BytesIO(file_bytes)
+                )
 
 
                 if image.mode != "RGB":
@@ -118,8 +124,7 @@ async def merge_files(
                     image = image.convert("RGB")
 
 
-                image_pdf =
-                    io.BytesIO()
+                image_pdf = io.BytesIO()
 
 
                 image.save(
@@ -131,8 +136,9 @@ async def merge_files(
                 image_pdf.seek(0)
 
 
-                reader =
-                    PdfReader(image_pdf)
+                reader = PdfReader(
+                    image_pdf
+                )
 
 
                 for page in reader.pages:
@@ -140,34 +146,55 @@ async def merge_files(
                     writer.add_page(page)
 
 
-            except Exception as error:
+            except Exception:
 
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Invalid image: {uploaded_file.filename}"
+                    detail=(
+                        f"Invalid image: "
+                        f"{uploaded_file.filename}"
+                    )
                 )
 
+
+        # ==================================
+        # UNSUPPORTED FILE
+        # ==================================
 
         else:
 
             raise HTTPException(
                 status_code=400,
-                detail=f"Unsupported file: {uploaded_file.filename}"
+                detail=(
+                    f"Unsupported file: "
+                    f"{uploaded_file.filename}"
+                )
             )
 
 
     # ==================================
-    # CREATE OUTPUT
+    # CREATE MERGED PDF
     # ==================================
 
-    output =
-        io.BytesIO()
+    if len(writer.pages) == 0:
+
+        raise HTTPException(
+            status_code=400,
+            detail="No pages found in uploaded files"
+        )
+
+
+    output = io.BytesIO()
 
 
     writer.write(output)
 
     output.seek(0)
 
+
+    # ==================================
+    # RETURN PDF
+    # ==================================
 
     return Response(
         content=output.getvalue(),
