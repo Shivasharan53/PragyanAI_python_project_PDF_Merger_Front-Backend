@@ -10,13 +10,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        PragyanAI PDF Studio
-    </title>
+    <title>PragyanAI PDF Studio</title>
 
     <link
         rel="stylesheet"
-        href="style.css"
+        href="./style.css"
     >
 
 </head>
@@ -31,23 +29,17 @@
 
 <aside class="sidebar">
 
-
     <div class="brand">
 
         <div class="brand-logo">
             P
         </div>
 
-
         <div>
 
-            <h2>
-                PragyanAI
-            </h2>
+            <h2>PragyanAI</h2>
 
-            <span>
-                PDF Studio
-            </span>
+            <span>PDF Studio</span>
 
         </div>
 
@@ -60,41 +52,28 @@
             href="#"
             class="nav-item active"
         >
-
-            <span>
-                📄
-            </span>
-
+            <span>📄</span>
             PDF Merger
-
         </a>
 
 
         <a
             href="#"
             class="nav-item"
+            onclick="return false;"
         >
-
-            <span>
-                🖼️
-            </span>
-
+            <span>🖼️</span>
             Image Merger
-
         </a>
 
 
         <a
             href="#"
             class="nav-item"
+            onclick="return false;"
         >
-
-            <span>
-                ⚡
-            </span>
-
+            <span>⚡</span>
             Quick Tools
-
         </a>
 
     </nav>
@@ -102,16 +81,11 @@
 
     <div class="sidebar-bottom">
 
-        <div>
-            Version 2.0
-        </div>
+        <div>Version 2.0</div>
 
-        <div>
-            Made with ❤️ by PragyanAI
-        </div>
+        <div>Made with ❤️ by PragyanAI</div>
 
     </div>
-
 
 </aside>
 
@@ -128,15 +102,11 @@
 
     <header class="header">
 
-
         <div>
 
             <div class="breadcrumb">
-
                 Workspace / PDF Merger
-
             </div>
-
 
             <h1>
                 PDF Merger
@@ -155,7 +125,6 @@
 
         </div>
 
-
     </header>
 
 
@@ -171,11 +140,8 @@
 
         <div class="hero">
 
-
             <span class="badge">
-
                 ✨ NEW VERSION
-
             </span>
 
 
@@ -200,7 +166,6 @@
 
             </p>
 
-
         </div>
 
 
@@ -214,12 +179,10 @@
             class="success-message"
         >
 
-            <span>
-                ✓
-            </span>
+            <span>✓</span>
 
             <span id="successText">
-                File added successfully
+                Ready
             </span>
 
         </div>
@@ -235,13 +198,11 @@
 
             <div class="card-title">
 
-
                 <div>
 
                     <h3>
                         Upload Files
                     </h3>
-
 
                     <p>
                         PDF, JPG, JPEG and PNG supported
@@ -260,12 +221,13 @@
 
                 </div>
 
-
             </div>
 
 
 
-            <!-- DROP ZONE -->
+            <!-- ==================================
+                 DROP ZONE
+            =================================== -->
 
             <div
                 class="drop-zone"
@@ -274,29 +236,30 @@
 
 
                 <div class="upload-icon">
-
                     ↑
-
                 </div>
 
 
                 <h3>
-
                     Drag & Drop your files here
-
                 </h3>
 
 
                 <p>
-
                     or click the button below
-
                 </p>
 
 
+                <!-- IMPORTANT:
+                     INLINE onclick guarantees
+                     the file picker opens.
+                -->
+
                 <button
+                    type="button"
                     class="primary-btn"
                     id="browseBtn"
+                    onclick="document.getElementById('fileInput').click();"
                 >
 
                     Choose Files
@@ -308,7 +271,7 @@
                     type="file"
                     id="fileInput"
                     multiple
-                    accept=".pdf,.jpg,.jpeg,.png"
+                    accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
                     hidden
                 >
 
@@ -348,11 +311,8 @@
 
                 <div class="merged-info">
 
-
                     <div class="merged-icon">
-
                         📄
-
                     </div>
 
 
@@ -369,14 +329,13 @@
 
                     </div>
 
-
                 </div>
 
 
                 <div class="merged-actions">
 
-
                     <button
+                        type="button"
                         class="view-merged-btn"
                         id="viewMergedBtn"
                     >
@@ -387,6 +346,7 @@
 
 
                     <button
+                        type="button"
                         class="download-btn"
                         id="downloadBtn"
                     >
@@ -395,9 +355,7 @@
 
                     </button>
 
-
                 </div>
-
 
             </div>
 
@@ -409,8 +367,8 @@
 
             <div class="actions">
 
-
                 <button
+                    type="button"
                     class="secondary-btn"
                     id="clearBtn"
                 >
@@ -421,6 +379,7 @@
 
 
                 <button
+                    type="button"
                     class="merge-btn"
                     id="mergeBtn"
                     disabled
@@ -435,7 +394,6 @@
                     </span>
 
                 </button>
-
 
             </div>
 
@@ -453,49 +411,37 @@
 
             <div class="info-card">
 
-
                 <div class="info-icon">
                     🔒
                 </div>
-
 
                 <h3>
                     Private
                 </h3>
 
-
                 <p>
-
                     Files are processed only
                     for creating your merged PDF.
-
                 </p>
-
 
             </div>
 
 
 
             <div class="info-card">
-
 
                 <div class="info-icon">
                     ⚡
                 </div>
 
-
                 <h3>
                     Fast
                 </h3>
 
-
                 <p>
-
                     Merge multiple documents
                     quickly with one click.
-
                 </p>
-
 
             </div>
 
@@ -503,24 +449,18 @@
 
             <div class="info-card">
 
-
                 <div class="info-icon">
                     📄
                 </div>
-
 
                 <h3>
                     Multiple Formats
                 </h3>
 
-
                 <p>
-
                     Combine PDF and image files
                     into one PDF.
-
                 </p>
-
 
             </div>
 
@@ -544,11 +484,12 @@
 </main>
 
 
+
 <!-- ======================================
      JAVASCRIPT
 ======================================= -->
 
-<script src="app.js"></script>
+<script src="./app.js"></script>
 
 
 </body>
