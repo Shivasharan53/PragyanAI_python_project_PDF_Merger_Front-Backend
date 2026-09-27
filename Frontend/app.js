@@ -1,3 +1,4 @@
+```javascript
 // ==========================================
 // PRAGYANAI PDF MERGER
 // ==========================================
@@ -59,7 +60,7 @@ fileInput.addEventListener("change", (event) => {
 
 
 // ==========================================
-// DRAG & DROP
+// DRAG & DROP UPLOAD
 // ==========================================
 
 dropZone.addEventListener("dragover", (event) => {
@@ -115,7 +116,6 @@ function addFiles(files) {
 
 
         // Check file type
-
         if (!allowedTypes.includes(extension)) {
 
             showMessage(
@@ -128,7 +128,6 @@ function addFiles(files) {
 
 
         // Check duplicate
-
         const duplicate = selectedFiles.some(
             existingFile =>
                 existingFile.name === file.name &&
@@ -231,6 +230,25 @@ function renderFiles() {
                     👁 View
                 </button>
 
+
+                <button
+                    class="move-up"
+                    type="button"
+                    ${index === 0 ? "disabled" : ""}
+                >
+                    ↑ Up
+                </button>
+
+
+                <button
+                    class="move-down"
+                    type="button"
+                    ${index === selectedFiles.length - 1 ? "disabled" : ""}
+                >
+                    ↓ Down
+                </button>
+
+
                 <button
                     class="remove-file"
                     type="button"
@@ -261,6 +279,80 @@ function renderFiles() {
 
 
         // ==================================
+        // MOVE UP
+        // ==================================
+
+        const moveUpButton =
+            item.querySelector(".move-up");
+
+
+        moveUpButton.addEventListener("click", () => {
+
+            if (index === 0) {
+                return;
+            }
+
+
+            // Swap current file with previous file
+            const temp =
+                selectedFiles[index - 1];
+
+            selectedFiles[index - 1] =
+                selectedFiles[index];
+
+            selectedFiles[index] =
+                temp;
+
+
+            renderFiles();
+
+
+            showMessage(
+                "File moved up successfully.",
+                true
+            );
+
+        });
+
+
+        // ==================================
+        // MOVE DOWN
+        // ==================================
+
+        const moveDownButton =
+            item.querySelector(".move-down");
+
+
+        moveDownButton.addEventListener("click", () => {
+
+            if (index === selectedFiles.length - 1) {
+                return;
+            }
+
+
+            // Swap current file with next file
+            const temp =
+                selectedFiles[index + 1];
+
+            selectedFiles[index + 1] =
+                selectedFiles[index];
+
+            selectedFiles[index] =
+                temp;
+
+
+            renderFiles();
+
+
+            showMessage(
+                "File moved down successfully.",
+                true
+            );
+
+        });
+
+
+        // ==================================
         // REMOVE FILE
         // ==================================
 
@@ -274,12 +366,15 @@ function renderFiles() {
 
                 URL.revokeObjectURL(fileURL);
 
+
                 selectedFiles.splice(
                     index,
                     1
                 );
 
+
                 renderFiles();
+
 
                 showMessage(
                     "File removed successfully.",
@@ -455,6 +550,7 @@ mergeBtn.addEventListener(
             new FormData();
 
 
+        // Files are sent in the current order
         selectedFiles.forEach(file => {
 
             formData.append(
@@ -466,9 +562,7 @@ mergeBtn.addEventListener(
 
 
         // Loading state
-
         mergeBtn.disabled = true;
-
 
         mergeBtn.innerHTML = `
             <span>Merging...</span>
@@ -506,6 +600,7 @@ mergeBtn.addEventListener(
                 } catch {
 
                     // Ignore JSON error
+
                 }
 
 
@@ -514,29 +609,26 @@ mergeBtn.addEventListener(
 
 
             // Get PDF
-
             const blob =
                 await response.blob();
 
 
             // Remove previous URL
-
             if (mergedPDFUrl) {
 
                 URL.revokeObjectURL(
                     mergedPDFUrl
                 );
+
             }
 
 
             // Create new URL
-
             mergedPDFUrl =
                 URL.createObjectURL(blob);
 
 
             // Show merged area
-
             mergedFileArea.classList.add(
                 "show"
             );
@@ -587,6 +679,7 @@ mergeBtn.addEventListener(
                 "Files merged successfully!",
                 true
             );
+
 
         } catch (error) {
 
@@ -654,6 +747,7 @@ function showMessage(
 
         successMessage.style.color =
             "#dc2626";
+
     }
 
 
@@ -683,6 +777,7 @@ function formatSize(bytes) {
     if (bytes < 1024) {
 
         return `${bytes} B`;
+
     }
 
 
@@ -691,12 +786,14 @@ function formatSize(bytes) {
         return `${(
             bytes / 1024
         ).toFixed(1)} KB`;
+
     }
 
 
     return `${(
         bytes / (1024 * 1024)
     ).toFixed(1)} MB`;
+
 }
 
 
@@ -709,9 +806,12 @@ function escapeHtml(text) {
     const div =
         document.createElement("div");
 
+
     div.textContent = text;
 
+
     return div.innerHTML;
+
 }
 
 
@@ -720,3 +820,4 @@ function escapeHtml(text) {
 // ==========================================
 
 renderFiles();
+```
