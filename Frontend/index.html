@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>PragyanAI Document Flow</title>
 
@@ -14,411 +11,325 @@
 
 <body>
 
-<!-- =========================
-     TOP NAVBAR
-========================= -->
-
-<header class="topbar">
+<!-- SIDEBAR -->
+<aside class="sidebar">
 
     <div class="logo-area">
-
-        <div class="logo-box">
-            P
-        </div>
+        <div class="logo">P</div>
 
         <div>
             <h2>PragyanAI</h2>
             <span>Document Flow</span>
         </div>
-
     </div>
 
+    <div class="menu-title">WORKSPACE</div>
 
-    <div class="top-status">
+    <nav>
+        <a href="#" class="menu active">
+            <span>▣</span>
+            Document Merger
+        </a>
 
-        <span class="online-dot"></span>
+        <a href="#" class="menu">
+            <span>◫</span>
+            File Manager
+        </a>
 
-        System Ready
+        <a href="#" class="menu">
+            <span>⚙</span>
+            Quick Tools
+        </a>
+    </nav>
 
+    <div class="sidebar-bottom">
+        <div class="secure-box">
+            <span>🔒</span>
+            <div>
+                <strong>Secure Workspace</strong>
+                <small>Your files stay private</small>
+            </div>
+        </div>
+
+        <p>PragyanAI v2.0</p>
     </div>
 
-</header>
+</aside>
 
 
-<!-- =========================
-     MAIN CONTAINER
-========================= -->
+<!-- MAIN -->
+<main class="main">
 
-<main class="dashboard">
-
-    <!-- PAGE HEADER -->
-
-    <section class="page-heading">
+    <!-- HEADER -->
+    <header class="topbar">
 
         <div>
+            <div class="breadcrumb">
+                Workspace / Document Merger
+            </div>
 
-            <span class="eyebrow">
-                DOCUMENT WORKSPACE
-            </span>
-
-            <h1>
-                Build your PDF
-                <span>your way.</span>
-            </h1>
-
-            <p>
-                Upload documents, arrange their order,
-                preview them and create one PDF.
-            </p>
-
+            <h1>Document Merger</h1>
         </div>
 
-    </section>
+        <div class="system-status">
+            <span class="online-dot"></span>
+            System Online
+        </div>
+
+    </header>
 
 
-    <!-- =========================
-         STAT CARDS
-    ========================= -->
+    <!-- CONTENT -->
+    <section class="content">
 
-    <section class="stats">
-
-        <div class="stat-card">
-
-            <div class="stat-icon purple">
-                📄
-            </div>
+        <!-- WELCOME -->
+        <section class="welcome">
 
             <div>
-                <span>Documents</span>
+                <span class="welcome-tag">
+                    DOCUMENT WORKSPACE
+                </span>
 
-                <strong id="fileCount">
-                    0
-                </strong>
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon blue">
-                📦
-            </div>
-
-            <div>
-                <span>Total Size</span>
-
-                <strong id="totalSize">
-                    0 KB
-                </strong>
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon green">
-                ✓
-            </div>
-
-            <div>
-                <span>Status</span>
-
-                <strong id="statusText">
-                    Waiting
-                </strong>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         WORKSPACE
-    ========================= -->
-
-    <section class="workspace">
-
-
-        <!-- =====================
-             UPLOAD PANEL
-        ====================== -->
-
-        <div class="upload-panel">
-
-            <div class="panel-header">
-
-                <div>
-
-                    <span class="panel-label">
-                        STEP 01
-                    </span>
-
-                    <h2>
-                        Add Documents
-                    </h2>
-
-                    <p>
-                        Select PDF or image files
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div
-                class="upload-box"
-                id="dropZone"
-            >
-
-                <div class="upload-circle">
-                    ⬆
-                </div>
-
-                <h3>
-                    Drop files here
-                </h3>
+                <h2>
+                    Organize your files.<br>
+                    <span>Build one document.</span>
+                </h2>
 
                 <p>
-                    or choose files from your device
+                    Upload PDF and image files, arrange them in
+                    the order you want, and create one professional PDF.
                 </p>
-
-
-                <button
-                    type="button"
-                    id="browseBtn"
-                    class="choose-btn"
-                >
-
-                    + Choose Files
-
-                </button>
-
-
-                <input
-                    type="file"
-                    id="fileInput"
-                    multiple
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    hidden
-                >
-
-
-                <small>
-                    PDF · JPG · JPEG · PNG
-                </small>
-
             </div>
 
-
-            <div class="tips">
-
-                <div>
-                    <span>✓</span>
-                    Multiple files supported
-                </div>
-
-                <div>
-                    <span>✓</span>
-                    Arrange before merging
-                </div>
-
-                <div>
-                    <span>✓</span>
-                    Preview documents
-                </div>
-
+            <div class="welcome-icon">
+                📑
             </div>
 
+        </section>
+
+
+        <!-- MESSAGE -->
+        <div id="successMessage" class="success-message">
+            <span>✓</span>
+            <span id="successText">
+                File added successfully
+            </span>
         </div>
 
 
-        <!-- =====================
-             DOCUMENT QUEUE
-        ====================== -->
+        <!-- DASHBOARD GRID -->
+        <div class="dashboard-grid">
 
-        <div class="queue-panel">
+            <!-- LEFT -->
+            <div class="workspace-card">
 
-            <div class="queue-header">
+                <div class="card-header">
 
-                <div>
+                    <div>
+                        <h3>Files in Workspace</h3>
+                        <p>Arrange your files before creating the PDF</p>
+                    </div>
 
-                    <span class="panel-label">
-                        STEP 02
-                    </span>
-
-                    <h2>
-                        Document Queue
-                    </h2>
+                    <div class="count-box">
+                        <strong id="fileCount">0</strong>
+                        <span>Files</span>
+                    </div>
 
                 </div>
 
 
-                <button
-                    type="button"
-                    id="clearBtn"
-                    class="clear-btn"
-                >
-                    Clear
-                </button>
+                <!-- UPLOAD -->
+                <div id="dropZone" class="upload-area">
+
+                    <div class="upload-circle">
+                        ↑
+                    </div>
+
+                    <h3>Drop your files here</h3>
+
+                    <p>
+                        or choose files from your computer
+                    </p>
+
+                    <button
+                        type="button"
+                        id="browseBtn"
+                        class="choose-btn"
+                    >
+                        + Choose Files
+                    </button>
+
+                    <input
+                        type="file"
+                        id="fileInput"
+                        multiple
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        hidden
+                    >
+
+                    <small>
+                        PDF · JPG · JPEG · PNG
+                    </small>
+
+                </div>
+
+
+                <!-- FILE LIST -->
+                <div id="fileList" class="file-list">
+
+                    <div id="emptyState" class="empty-state">
+
+                        <div>📂</div>
+
+                        <h4>No files added yet</h4>
+
+                        <p>
+                            Upload documents to start arranging them.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="bottom-actions">
+
+                    <button
+                        type="button"
+                        id="clearBtn"
+                        class="clear-btn"
+                    >
+                        Clear All
+                    </button>
+
+                    <button
+                        type="button"
+                        id="mergeBtn"
+                        class="create-btn"
+                        disabled
+                    >
+                        <span>Create Merged PDF</span>
+                        <span>→</span>
+                    </button>
+
+                </div>
 
             </div>
 
 
-            <p class="queue-help">
+            <!-- RIGHT -->
+            <aside class="side-panel">
 
-                Use the arrows to control the final PDF order.
+                <div class="stats-card">
 
-            </p>
+                    <h3>Workspace Summary</h3>
 
-
-            <!-- FILE LIST -->
-
-            <div
-                id="fileList"
-                class="document-list"
-            >
-
-                <div
-                    id="emptyState"
-                    class="empty-state"
-                >
-
-                    <div>
-                        📂
+                    <div class="stat-row">
+                        <span>Files</span>
+                        <strong id="summaryFiles">0</strong>
                     </div>
 
-                    <h3>
-                        No documents yet
-                    </h3>
+                    <div class="stat-row">
+                        <span>Total Size</span>
+                        <strong id="totalSize">0 KB</strong>
+                    </div>
+
+                    <div class="stat-row">
+                        <span>Status</span>
+                        <strong id="statusText" class="ready">
+                            Waiting
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <div class="tips-card">
+
+                    <div class="tip-icon">↕</div>
+
+                    <h3>Control file order</h3>
 
                     <p>
-                        Add files to create your document queue.
+                        Use the ↑ and ↓ buttons beside each file
+                        to decide the final PDF order.
                     </p>
 
                 </div>
 
+
+                <div class="tips-card">
+
+                    <div class="tip-icon">⚡</div>
+
+                    <h3>Quick workflow</h3>
+
+                    <p>
+                        Add your files, arrange them, then click
+                        Create Merged PDF.
+                    </p>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- RESULT -->
+        <div id="resultPanel" class="result-panel">
+
+            <div class="result-info">
+
+                <div class="result-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <h3>Merged PDF Ready</h3>
+
+                    <p>
+                        Your document has been created successfully.
+                    </p>
+                </div>
+
             </div>
 
 
-            <!-- =====================
-                 MERGE AREA
-            ====================== -->
-
-            <div class="merge-area">
+            <div class="result-buttons">
 
                 <button
                     type="button"
-                    id="mergeBtn"
-                    class="merge-button"
-                    disabled
+                    id="viewMergedBtn"
+                    class="view-btn"
                 >
+                    👁 View
+                </button>
 
-                    <span>
-                        Create Merged PDF
-                    </span>
-
-                    <span>
-                        →
-                    </span>
-
+                <button
+                    type="button"
+                    id="downloadBtn"
+                    class="download-btn"
+                >
+                    ↓ Download
                 </button>
 
             </div>
 
-
         </div>
 
     </section>
 
 
-    <!-- =========================
-         SUCCESS MESSAGE
-    ========================= -->
-
-    <div
-        id="successMessage"
-        class="message success"
-    >
-
-        <span>✓</span>
-
-        <span id="successText">
-            File added successfully
-        </span>
-
-    </div>
-
-
-    <!-- =========================
-         RESULT
-    ========================= -->
-
-    <section
-        id="resultPanel"
-        class="result-panel"
-    >
-
-        <div class="result-icon">
-            ✓
-        </div>
-
-
-        <div class="result-info">
-
-            <span>
-                PROCESS COMPLETE
-            </span>
-
-            <h2>
-                Your merged PDF is ready
-            </h2>
-
-            <p>
-                All documents have been combined in your selected order.
-            </p>
-
-        </div>
-
-
-        <div class="result-buttons">
-
-            <button
-                type="button"
-                id="viewMergedBtn"
-                class="view-button"
-            >
-                👁 View
-            </button>
-
-            <button
-                type="button"
-                id="downloadBtn"
-                class="download-button"
-            >
-                ↓ Download
-            </button>
-
-        </div>
-
-    </section>
-
+    <footer>
+        © 2026 PragyanAI · Document Flow
+    </footer>
 
 </main>
-
-
-<footer>
-
-    © 2026 PragyanAI · Document Flow
-
-</footer>
 
 
 <script src="app.js"></script>
 
 </body>
-
 </html>
