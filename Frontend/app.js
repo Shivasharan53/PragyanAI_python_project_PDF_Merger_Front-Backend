@@ -4,6 +4,23 @@
 
 
 /* =========================================
+   BACKEND URL
+========================================= */
+
+/*
+   IMPORTANT:
+   Replace this with your Render FastAPI URL.
+
+   Example:
+   const BACKEND_URL = "https://your-project.onrender.com";
+
+   DO NOT add /merge here.
+*/
+
+const BACKEND_URL = "YOUR_RENDER_BACKEND_URL";
+
+
+/* =========================================
    ELEMENTS
 ========================================= */
 
@@ -47,68 +64,115 @@ let mergedPdfBlob = null;
 
 
 /* =========================================
+   SAFE ELEMENT CHECK
+========================================= */
+
+function elementExists(element) {
+    return element !== null;
+}
+
+
+/* =========================================
    BROWSE BUTTON
 ========================================= */
 
-browseBtn.addEventListener("click", function () {
+if (elementExists(browseBtn)) {
 
-    fileInput.click();
+    browseBtn.addEventListener(
+        "click",
+        function (event) {
 
-});
+            event.preventDefault();
+
+            fileInput.click();
+
+        }
+    );
+
+}
 
 
 /* =========================================
    FILE INPUT
 ========================================= */
 
-fileInput.addEventListener("change", function (event) {
+if (elementExists(fileInput)) {
 
-    const files = Array.from(event.target.files);
+    fileInput.addEventListener(
+        "change",
+        function (event) {
 
-    addFiles(files);
+            const files =
+                Array.from(event.target.files);
 
-    /*
-       Reset input so the same file
-       can be selected again.
-    */
+            addFiles(files);
 
-    fileInput.value = "";
+            /*
+               Allows the same file to be
+               selected again later.
+            */
 
-});
+            fileInput.value = "";
+
+        }
+    );
+
+}
 
 
 /* =========================================
    DRAG & DROP
 ========================================= */
 
-dropZone.addEventListener("dragover", function (event) {
+if (elementExists(dropZone)) {
 
-    event.preventDefault();
+    dropZone.addEventListener(
+        "dragover",
+        function (event) {
 
-    dropZone.classList.add("dragover");
+            event.preventDefault();
 
-});
+            dropZone.classList.add(
+                "dragover"
+            );
 
-
-dropZone.addEventListener("dragleave", function () {
-
-    dropZone.classList.remove("dragover");
-
-});
+        }
+    );
 
 
-dropZone.addEventListener("drop", function (event) {
+    dropZone.addEventListener(
+        "dragleave",
+        function () {
 
-    event.preventDefault();
+            dropZone.classList.remove(
+                "dragover"
+            );
 
-    dropZone.classList.remove("dragover");
+        }
+    );
 
-    const files =
-        Array.from(event.dataTransfer.files);
 
-    addFiles(files);
+    dropZone.addEventListener(
+        "drop",
+        function (event) {
 
-});
+            event.preventDefault();
+
+            dropZone.classList.remove(
+                "dragover"
+            );
+
+            const files =
+                Array.from(
+                    event.dataTransfer.files
+                );
+
+            addFiles(files);
+
+        }
+    );
+
+}
 
 
 /* =========================================
@@ -117,17 +181,32 @@ dropZone.addEventListener("drop", function (event) {
 
 function addFiles(files) {
 
-    const validFiles = files.filter(function (file) {
+    const allowedExtensions = [
+        ".pdf",
+        ".jpg",
+        ".jpeg",
+        ".png"
+    ];
 
-        const allowedTypes = [
-            "application/pdf",
-            "image/jpeg",
-            "image/png"
-        ];
 
-        return allowedTypes.includes(file.type);
+    const validFiles =
+        files.filter(function (file) {
 
-    });
+            const fileName =
+                file.name.toLowerCase();
+
+
+            return allowedExtensions.some(
+                function (extension) {
+
+                    return fileName.endsWith(
+                        extension
+                    );
+
+                }
+            );
+
+        });
 
 
     if (validFiles.length === 0) {
@@ -141,14 +220,29 @@ function addFiles(files) {
     }
 
 
-    validFiles.forEach(function (file) {
+    validFiles.forEach(
+        function (file) {
 
-        selectedFiles.push(file);
+            selectedFiles.push(file);
 
-    });
+        }
+    );
+
+
+    mergedPdfBlob = null;
+
+
+    if (elementExists(resultPanel)) {
+
+        resultPanel.classList.remove(
+            "show"
+        );
+
+    }
 
 
     renderFiles();
+
 
     showMessage(
         validFiles.length +
@@ -166,29 +260,51 @@ function addFiles(files) {
 
 function renderFiles() {
 
+    if (!elementExists(fileList)) {
+        return;
+    }
+
+
     fileList.innerHTML = "";
 
 
     if (selectedFiles.length === 0) {
 
-        fileList.appendChild(emptyState);
+        if (elementExists(emptyState)) {
 
-        emptyState.style.display = "block";
+            fileList.appendChild(
+                emptyState
+            );
+
+            emptyState.style.display =
+                "block";
+
+        }
 
     }
     else {
 
-        emptyState.style.display = "none";
+        if (elementExists(emptyState)) {
+
+            emptyState.style.display =
+                "none";
+
+        }
 
 
-        selectedFiles.forEach(function (file, index) {
+        selectedFiles.forEach(
+            function (file, index) {
 
-            const item =
-                createFileItem(file, index);
+                const item =
+                    createFileItem(
+                        file,
+                        index
+                    );
 
-            fileList.appendChild(item);
+                fileList.appendChild(item);
 
-        });
+            }
+        );
 
     }
 
@@ -207,33 +323,46 @@ function createFileItem(file, index) {
     const item =
         document.createElement("div");
 
-    item.className = "document-item";
+    item.className =
+        "document-item";
 
 
-    /* NUMBER */
+    /* =====================================
+       NUMBER
+    ===================================== */
 
     const number =
         document.createElement("div");
 
-    number.className = "document-number";
+    number.className =
+        "document-number";
 
-    number.textContent = index + 1;
+    number.textContent =
+        index + 1;
 
 
-    /* ICON */
+    /* =====================================
+       ICON
+    ===================================== */
 
     const icon =
         document.createElement("div");
 
-    icon.className = "document-icon";
+    icon.className =
+        "document-icon";
+
 
     icon.textContent =
-        file.type === "application/pdf"
+        file.name
+            .toLowerCase()
+            .endsWith(".pdf")
             ? "📄"
             : "🖼️";
 
 
-    /* DETAILS */
+    /* =====================================
+       DETAILS
+    ===================================== */
 
     const details =
         document.createElement("div");
@@ -284,12 +413,14 @@ function createFileItem(file, index) {
     const upButton =
         document.createElement("button");
 
-    upButton.type = "button";
+    upButton.type =
+        "button";
 
     upButton.className =
         "move-btn";
 
-    upButton.textContent = "↑";
+    upButton.textContent =
+        "↑";
 
     upButton.title =
         "Move Up";
@@ -298,32 +429,43 @@ function createFileItem(file, index) {
     const downButton =
         document.createElement("button");
 
-    downButton.type = "button";
+    downButton.type =
+        "button";
 
     downButton.className =
         "move-btn";
 
-    downButton.textContent = "↓";
+    downButton.textContent =
+        "↓";
 
     downButton.title =
         "Move Down";
 
 
     /*
-       Disable buttons when the file
-       is already first or last.
+       First file cannot move up.
     */
 
     upButton.disabled =
         index === 0;
 
+
+    /*
+       Last file cannot move down.
+    */
+
     downButton.disabled =
-        index === selectedFiles.length - 1;
+        index ===
+        selectedFiles.length - 1;
 
 
     upButton.addEventListener(
         "click",
-        function () {
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
 
             moveFileUp(index);
 
@@ -333,7 +475,11 @@ function createFileItem(file, index) {
 
     downButton.addEventListener(
         "click",
-        function () {
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
 
             moveFileDown(index);
 
@@ -341,9 +487,13 @@ function createFileItem(file, index) {
     );
 
 
-    moveButtons.appendChild(upButton);
+    moveButtons.appendChild(
+        upButton
+    );
 
-    moveButtons.appendChild(downButton);
+    moveButtons.appendChild(
+        downButton
+    );
 
 
     /* =====================================
@@ -357,15 +507,21 @@ function createFileItem(file, index) {
         "file-actions";
 
 
+    /* =====================================
+       PREVIEW
+    ===================================== */
+
     const previewButton =
         document.createElement("button");
 
-    previewButton.type = "button";
+    previewButton.type =
+        "button";
 
     previewButton.className =
         "file-action preview-btn";
 
-    previewButton.textContent = "👁";
+    previewButton.textContent =
+        "👁";
 
     previewButton.title =
         "Preview";
@@ -373,7 +529,11 @@ function createFileItem(file, index) {
 
     previewButton.addEventListener(
         "click",
-        function () {
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
 
             previewFile(file);
 
@@ -381,15 +541,21 @@ function createFileItem(file, index) {
     );
 
 
+    /* =====================================
+       REMOVE
+    ===================================== */
+
     const removeButton =
         document.createElement("button");
 
-    removeButton.type = "button";
+    removeButton.type =
+        "button";
 
     removeButton.className =
         "file-action remove-btn";
 
-    removeButton.textContent = "×";
+    removeButton.textContent =
+        "×";
 
     removeButton.title =
         "Remove";
@@ -397,7 +563,11 @@ function createFileItem(file, index) {
 
     removeButton.addEventListener(
         "click",
-        function () {
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
 
             removeFile(index);
 
@@ -405,13 +575,17 @@ function createFileItem(file, index) {
     );
 
 
-    actions.appendChild(previewButton);
+    actions.appendChild(
+        previewButton
+    );
 
-    actions.appendChild(removeButton);
+    actions.appendChild(
+        removeButton
+    );
 
 
     /* =====================================
-       APPEND
+       APPEND EVERYTHING
     ===================================== */
 
     item.appendChild(number);
@@ -437,9 +611,7 @@ function createFileItem(file, index) {
 function moveFileUp(index) {
 
     if (index <= 0) {
-
         return;
-
     }
 
 
@@ -509,11 +681,36 @@ function moveFileDown(index) {
 
 function removeFile(index) {
 
+    if (
+        index < 0 ||
+        index >= selectedFiles.length
+    ) {
+
+        return;
+
+    }
+
+
     const removed =
         selectedFiles[index];
 
 
-    selectedFiles.splice(index, 1);
+    selectedFiles.splice(
+        index,
+        1
+    );
+
+
+    mergedPdfBlob = null;
+
+
+    if (elementExists(resultPanel)) {
+
+        resultPanel.classList.remove(
+            "show"
+        );
+
+    }
 
 
     renderFiles();
@@ -531,27 +728,47 @@ function removeFile(index) {
    CLEAR ALL
 ========================================= */
 
-clearBtn.addEventListener(
-    "click",
-    function () {
+if (elementExists(clearBtn)) {
 
-        selectedFiles = [];
+    clearBtn.addEventListener(
+        "click",
+        function (event) {
 
-        mergedPdfBlob = null;
+            event.preventDefault();
 
-        resultPanel.classList.remove("show");
+            selectedFiles = [];
 
-        renderFiles();
+            mergedPdfBlob = null;
 
-        statusText.textContent =
-            "Waiting";
 
-        showMessage(
-            "All files cleared."
-        );
+            if (elementExists(resultPanel)) {
 
-    }
-);
+                resultPanel.classList.remove(
+                    "show"
+                );
+
+            }
+
+
+            renderFiles();
+
+
+            if (elementExists(statusText)) {
+
+                statusText.textContent =
+                    "Waiting";
+
+            }
+
+
+            showMessage(
+                "All files cleared."
+            );
+
+        }
+    );
+
+}
 
 
 /* =========================================
@@ -575,28 +792,44 @@ function updateStats() {
         );
 
 
-    fileCount.textContent =
-        count;
+    if (elementExists(fileCount)) {
 
-
-    totalSize.textContent =
-        formatFileSize(size);
-
-
-    mergeBtn.disabled =
-        count < 1;
-
-
-    if (count === 0) {
-
-        statusText.textContent =
-            "Waiting";
+        fileCount.textContent =
+            count;
 
     }
-    else {
 
-        statusText.textContent =
-            "Ready";
+
+    if (elementExists(totalSize)) {
+
+        totalSize.textContent =
+            formatFileSize(size);
+
+    }
+
+
+    if (elementExists(mergeBtn)) {
+
+        mergeBtn.disabled =
+            count === 0;
+
+    }
+
+
+    if (elementExists(statusText)) {
+
+        if (count === 0) {
+
+            statusText.textContent =
+                "Waiting";
+
+        }
+        else {
+
+            statusText.textContent =
+                "Ready";
+
+        }
 
     }
 
@@ -604,12 +837,12 @@ function updateStats() {
 
 
 /* =========================================
-   FORMAT SIZE
+   FORMAT FILE SIZE
 ========================================= */
 
 function formatFileSize(bytes) {
 
-    if (bytes === 0) {
+    if (!bytes || bytes <= 0) {
 
         return "0 KB";
 
@@ -647,14 +880,37 @@ function formatFileSize(bytes) {
 
 function previewFile(file) {
 
-    const url =
-        URL.createObjectURL(file);
+    try {
+
+        const url =
+            URL.createObjectURL(file);
 
 
-    window.open(
-        url,
-        "_blank"
-    );
+        window.open(
+            url,
+            "_blank"
+        );
+
+
+        setTimeout(
+            function () {
+
+                URL.revokeObjectURL(url);
+
+            },
+            60000
+        );
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Unable to preview this file."
+        );
+
+    }
 
 }
 
@@ -665,6 +921,16 @@ function previewFile(file) {
 
 function showMessage(message) {
 
+    if (
+        !elementExists(successMessage) ||
+        !elementExists(successText)
+    ) {
+
+        return;
+
+    }
+
+
     successText.textContent =
         message;
 
@@ -674,13 +940,16 @@ function showMessage(message) {
     );
 
 
-    setTimeout(function () {
+    setTimeout(
+        function () {
 
-        successMessage.classList.remove(
-            "show"
-        );
+            successMessage.classList.remove(
+                "show"
+            );
 
-    }, 2500);
+        },
+        2500
+    );
 
 }
 
@@ -689,197 +958,370 @@ function showMessage(message) {
    MERGE FILES
 ========================================= */
 
-mergeBtn.addEventListener(
-    "click",
-    async function () {
+if (elementExists(mergeBtn)) {
 
-        if (selectedFiles.length === 0) {
+    mergeBtn.addEventListener(
+        "click",
+        async function (event) {
 
-            return;
-
-        }
+            event.preventDefault();
 
 
-        mergeBtn.disabled = true;
+            if (selectedFiles.length === 0) {
 
-        mergeBtn.innerHTML =
-            "<span>Creating PDF...</span><span>⏳</span>";
-
-        statusText.textContent =
-            "Processing";
-
-
-        try {
-
-            const formData =
-                new FormData();
-
-
-            /*
-               IMPORTANT:
-               Files are appended in the
-               CURRENT selectedFiles order.
-
-               Therefore ↑ and ↓ directly
-               control the final PDF order.
-            */
-
-            selectedFiles.forEach(
-                function (file) {
-
-                    formData.append(
-                        "files",
-                        file
-                    );
-
-                }
-            );
-
-
-            /*
-               If your Render backend URL
-               is different, replace this URL.
-            */
-
-            const response =
-                await fetch(
-                    "/merge",
-                    {
-                        method: "POST",
-                        body: formData
-                    }
+                showMessage(
+                    "Please add files first."
                 );
 
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Merge failed"
-                );
+                return;
 
             }
 
 
-            mergedPdfBlob =
-                await response.blob();
+            /*
+               Check Render URL
+            */
 
+            if (
+                !BACKEND_URL ||
+                BACKEND_URL ===
+                "YOUR_RENDER_BACKEND_URL"
+            ) {
 
-            resultPanel.classList.add(
-                "show"
-            );
+                showMessage(
+                    "Please add your Render backend URL in app.js."
+                );
 
+                if (elementExists(statusText)) {
 
-            statusText.textContent =
-                "Completed";
+                    statusText.textContent =
+                        "Backend URL Missing";
 
+                }
 
-            showMessage(
-                "PDF created successfully."
-            );
+                return;
 
+            }
 
-        }
-        catch (error) {
-
-            console.error(error);
-
-
-            statusText.textContent =
-                "Error";
-
-
-            showMessage(
-                "Unable to merge files. Check your backend connection."
-            );
-
-        }
-        finally {
 
             mergeBtn.disabled =
-                selectedFiles.length === 0;
+                true;
 
 
             mergeBtn.innerHTML =
-                "<span>Create Merged PDF</span><span>→</span>";
+                "<span>Creating PDF...</span><span>⏳</span>";
+
+
+            if (elementExists(statusText)) {
+
+                statusText.textContent =
+                    "Processing";
+
+            }
+
+
+            try {
+
+                const formData =
+                    new FormData();
+
+
+                /*
+                   IMPORTANT:
+                   selectedFiles is already
+                   arranged using ↑ and ↓.
+
+                   Therefore the backend receives
+                   the files in the exact order
+                   shown on the screen.
+                */
+
+                selectedFiles.forEach(
+                    function (file) {
+
+                        formData.append(
+                            "files",
+                            file,
+                            file.name
+                        );
+
+                    }
+                );
+
+
+                /*
+                   Remove trailing slash if
+                   the user accidentally adds one.
+                */
+
+                const cleanBackendURL =
+                    BACKEND_URL.replace(
+                        /\/$/,
+                        ""
+                    );
+
+
+                const response =
+                    await fetch(
+                        cleanBackendURL +
+                        "/merge",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    let errorMessage =
+                        "Merge failed.";
+
+
+                    try {
+
+                        const errorData =
+                            await response.json();
+
+
+                        if (
+                            errorData.detail
+                        ) {
+
+                            errorMessage =
+                                errorData.detail;
+
+                        }
+
+                    }
+                    catch (jsonError) {
+
+                        /*
+                           Backend did not return
+                           JSON. Keep default message.
+                        */
+
+                    }
+
+
+                    throw new Error(
+                        errorMessage
+                    );
+
+                }
+
+
+                const contentType =
+                    response.headers.get(
+                        "content-type"
+                    );
+
+
+                if (
+                    !contentType ||
+                    !contentType.includes(
+                        "application/pdf"
+                    )
+                ) {
+
+                    throw new Error(
+                        "Backend did not return a PDF."
+                    );
+
+                }
+
+
+                mergedPdfBlob =
+                    await response.blob();
+
+
+                if (elementExists(resultPanel)) {
+
+                    resultPanel.classList.add(
+                        "show"
+                    );
+
+                }
+
+
+                if (elementExists(statusText)) {
+
+                    statusText.textContent =
+                        "Completed";
+
+                }
+
+
+                showMessage(
+                    "PDF created successfully."
+                );
+
+            }
+            catch (error) {
+
+                console.error(
+                    "Merge Error:",
+                    error
+                );
+
+
+                if (elementExists(statusText)) {
+
+                    statusText.textContent =
+                        "Error";
+
+                }
+
+
+                showMessage(
+                    error.message ||
+                    "Unable to merge files."
+                );
+
+            }
+            finally {
+
+                mergeBtn.disabled =
+                    selectedFiles.length === 0;
+
+
+                mergeBtn.innerHTML =
+                    "<span>Create Merged PDF</span><span>→</span>";
+
+            }
 
         }
+    );
 
-    }
-);
+}
 
 
 /* =========================================
    VIEW MERGED PDF
 ========================================= */
 
-viewMergedBtn.addEventListener(
-    "click",
-    function () {
+if (elementExists(viewMergedBtn)) {
 
-        if (!mergedPdfBlob) {
+    viewMergedBtn.addEventListener(
+        "click",
+        function (event) {
 
-            return;
-
-        }
+            event.preventDefault();
 
 
-        const url =
-            URL.createObjectURL(
-                mergedPdfBlob
+            if (!mergedPdfBlob) {
+
+                showMessage(
+                    "Please create the merged PDF first."
+                );
+
+                return;
+
+            }
+
+
+            const url =
+                URL.createObjectURL(
+                    mergedPdfBlob
+                );
+
+
+            window.open(
+                url,
+                "_blank"
             );
 
 
-        window.open(
-            url,
-            "_blank"
-        );
+            setTimeout(
+                function () {
 
-    }
-);
+                    URL.revokeObjectURL(url);
+
+                },
+                60000
+            );
+
+        }
+    );
+
+}
 
 
 /* =========================================
-   DOWNLOAD
+   DOWNLOAD MERGED PDF
 ========================================= */
 
-downloadBtn.addEventListener(
-    "click",
-    function () {
+if (elementExists(downloadBtn)) {
 
-        if (!mergedPdfBlob) {
+    downloadBtn.addEventListener(
+        "click",
+        function (event) {
 
-            return;
-
-        }
+            event.preventDefault();
 
 
-        const url =
-            URL.createObjectURL(
-                mergedPdfBlob
+            if (!mergedPdfBlob) {
+
+                showMessage(
+                    "Please create the merged PDF first."
+                );
+
+                return;
+
+            }
+
+
+            const url =
+                URL.createObjectURL(
+                    mergedPdfBlob
+                );
+
+
+            const link =
+                document.createElement("a");
+
+
+            link.href =
+                url;
+
+
+            link.download =
+                "PragyanAI_Merged.pdf";
+
+
+            document.body.appendChild(
+                link
             );
 
 
-        const link =
-            document.createElement("a");
+            link.click();
 
 
-        link.href = url;
-
-        link.download =
-            "PragyanAI_Merged_Document.pdf";
-
-
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
+            document.body.removeChild(
+                link
+            );
 
 
-        URL.revokeObjectURL(url);
+            setTimeout(
+                function () {
 
-    }
-);
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                },
+                1000
+            );
+
+
+            showMessage(
+                "Merged PDF downloaded successfully."
+            );
+
+        }
+    );
+
+}
 
 
 /* =========================================
