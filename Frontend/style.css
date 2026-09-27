@@ -1,6 +1,6 @@
-/* ======================================
-   GLOBAL
-====================================== */
+/* =====================================
+   RESET
+===================================== */
 
 * {
     margin: 0;
@@ -8,7 +8,9 @@
     box-sizing: border-box;
 }
 
+
 body {
+
     font-family:
         Inter,
         system-ui,
@@ -17,274 +19,938 @@ body {
         "Segoe UI",
         sans-serif;
 
-    background: #f5f7fb;
-    color: #172033;
-    min-height: 100vh;
-}
+    background: #f7f8fc;
 
-
-/* ======================================
-   SIDEBAR
-====================================== */
-
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-
-    width: 250px;
-    height: 100vh;
-
-    background: #111827;
-    color: white;
-
-    padding: 26px 18px;
-
-    display: flex;
-    flex-direction: column;
-
-    z-index: 100;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    padding: 0 10px 30px;
-}
-
-.brand-logo {
-    width: 43px;
-    height: 43px;
-
-    border-radius: 12px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 21px;
-    font-weight: 800;
-
-    background:
-        linear-gradient(
-            135deg,
-            #6366f1,
-            #8b5cf6
-        );
-}
-
-.brand h2 {
-    font-size: 19px;
-}
-
-.brand span {
-    color: #9ca3af;
-    font-size: 12px;
-}
-
-
-/* ======================================
-   NAVIGATION
-====================================== */
-
-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.nav-item {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-
-    padding: 13px 14px;
-
-    color: #9ca3af;
-
-    text-decoration: none;
-
-    border-radius: 10px;
-
-    font-size: 14px;
-
-    transition: 0.2s;
-}
-
-.nav-item:hover {
-    background: #202737;
-    color: white;
-}
-
-.nav-item.active {
-    background: #292f40;
-    color: white;
-}
-
-.sidebar-bottom {
-    margin-top: auto;
-
-    color: #6b7280;
-
-    font-size: 12px;
-
-    padding: 10px;
-
-    line-height: 1.7;
-}
-
-
-/* ======================================
-   MAIN
-====================================== */
-
-.main {
-    margin-left: 250px;
+    color: #182033;
 
     min-height: 100vh;
 
-    display: flex;
-    flex-direction: column;
 }
 
 
-/* ======================================
-   HEADER
-====================================== */
+/* =====================================
+   TOP BAR
+===================================== */
 
-.header {
-    height: 82px;
+.topbar {
 
-    background: white;
+    height: 72px;
 
-    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+
+    border-bottom: 1px solid #e8eaf0;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
-    padding: 0 45px;
+    padding: 0 42px;
+
 }
 
-.breadcrumb {
-    color: #8a94a6;
 
-    font-size: 12px;
+.logo-area {
 
-    margin-bottom: 4px;
-}
-
-.header h1 {
-    font-size: 23px;
-}
-
-.header-right {
     display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.logo-box {
+
+    width: 40px;
+
+    height: 40px;
+
+    border-radius: 11px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #5b5ce2;
+
+    color: white;
+
+    font-size: 20px;
+
+    font-weight: 800;
+
+}
+
+
+.logo-area h2 {
+
+    font-size: 17px;
+
+}
+
+
+.logo-area span {
+
+    display: block;
+
+    color: #9298a8;
+
+    font-size: 11px;
+
+    margin-top: 2px;
+
+}
+
+
+.top-status {
+
+    display: flex;
+
     align-items: center;
 
     gap: 8px;
 
+    font-size: 12px;
+
     color: #657084;
 
-    font-size: 13px;
 }
 
-.status-dot {
+
+.online-dot {
+
     width: 8px;
+
     height: 8px;
 
     border-radius: 50%;
 
     background: #22c55e;
+
 }
 
 
-/* ======================================
-   CONTENT
-====================================== */
+/* =====================================
+   DASHBOARD
+===================================== */
 
-.content {
-    width: 100%;
+.dashboard {
 
-    max-width: 1120px;
+    max-width: 1250px;
 
     margin: auto;
 
-    padding: 40px 35px;
+    padding: 40px 30px 20px;
+
 }
 
 
-/* ======================================
-   HERO
-====================================== */
+/* =====================================
+   PAGE HEADING
+===================================== */
 
-.hero {
-    background:
-        linear-gradient(
-            135deg,
-            #111827,
-            #252d44
-        );
+.page-heading {
 
-    border-radius: 22px;
+    margin-bottom: 28px;
 
-    padding: 38px;
-
-    color: white;
-
-    margin-bottom: 22px;
 }
 
-.badge {
-    display: inline-block;
 
-    padding: 6px 10px;
+.eyebrow {
 
-    background:
-        rgba(255, 255, 255, 0.1);
+    font-size: 10px;
 
-    border:
-        1px solid
-        rgba(255, 255, 255, 0.15);
+    font-weight: 800;
 
-    border-radius: 20px;
+    letter-spacing: 1.5px;
 
-    font-size: 11px;
+    color: #6366f1;
 
-    margin-bottom: 15px;
 }
 
-.hero h2 {
-    font-size: 35px;
+
+.page-heading h1 {
+
+    font-size: 34px;
+
+    margin-top: 7px;
 
     line-height: 1.15;
 
-    margin-bottom: 12px;
 }
 
-.hero h2 span {
-    color: #a78bfa;
+
+.page-heading h1 span {
+
+    color: #6366f1;
+
 }
 
-.hero p {
-    color: #cbd5e1;
+
+.page-heading p {
+
+    color: #7b8495;
 
     font-size: 14px;
+
+    margin-top: 10px;
+
 }
 
 
-/* ======================================
-   SUCCESS MESSAGE
-====================================== */
+/* =====================================
+   STATS
+===================================== */
 
-.success-message {
-    display: none;
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.stat-card {
+
+    background: white;
+
+    border: 1px solid #e7e9ef;
+
+    border-radius: 14px;
+
+    padding: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+}
+
+
+.stat-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 11px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 18px;
+
+}
+
+
+.stat-icon.purple {
+
+    background: #efefff;
+
+}
+
+
+.stat-icon.blue {
+
+    background: #eaf5ff;
+
+}
+
+
+.stat-icon.green {
+
+    background: #eafaf1;
+
+}
+
+
+.stat-card span {
+
+    display: block;
+
+    color: #9298a8;
+
+    font-size: 11px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.stat-card strong {
+
+    font-size: 18px;
+
+}
+
+
+/* =====================================
+   WORKSPACE
+===================================== */
+
+.workspace {
+
+    display: grid;
+
+    grid-template-columns:
+        0.85fr 1.5fr;
+
+    gap: 18px;
+
+}
+
+
+/* =====================================
+   PANELS
+===================================== */
+
+.upload-panel,
+.queue-panel {
+
+    background: white;
+
+    border: 1px solid #e5e8ef;
+
+    border-radius: 18px;
+
+    padding: 24px;
+
+}
+
+
+.panel-header,
+.queue-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.panel-label {
+
+    color: #8b5cf6;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+}
+
+
+.panel-header h2,
+.queue-header h2 {
+
+    font-size: 19px;
+
+    margin-top: 5px;
+
+}
+
+
+.panel-header p {
+
+    color: #9298a8;
+
+    font-size: 12px;
+
+    margin-top: 4px;
+
+}
+
+
+/* =====================================
+   UPLOAD BOX
+===================================== */
+
+.upload-box {
+
+    border: 2px dashed #d8dce7;
+
+    border-radius: 15px;
+
+    min-height: 285px;
+
+    margin-top: 22px;
+
+    padding: 30px 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    transition: 0.2s;
+
+}
+
+
+.upload-box.dragover {
+
+    border-color: #6366f1;
+
+    background: #f5f3ff;
+
+}
+
+
+.upload-circle {
+
+    width: 58px;
+
+    height: 58px;
+
+    border-radius: 16px;
+
+    background: #f0efff;
+
+    color: #6366f1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 26px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.upload-box h3 {
+
+    font-size: 16px;
+
+}
+
+
+.upload-box p {
+
+    color: #9298a8;
+
+    font-size: 12px;
+
+    margin-top: 6px;
+
+}
+
+
+.choose-btn {
+
+    background: #6366f1;
+
+    color: white;
+
+    padding: 11px 18px;
+
+    border-radius: 9px;
+
+    margin-top: 17px;
+
+    font-weight: 700;
+
+    font-size: 12px;
+
+}
+
+
+.choose-btn:hover {
+
+    background: #4f46e5;
+
+}
+
+
+.upload-box small {
+
+    color: #a1a7b5;
+
+    font-size: 10px;
+
+    margin-top: 15px;
+
+}
+
+
+/* =====================================
+   TIPS
+===================================== */
+
+.tips {
+
+    margin-top: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+.tips div {
+
+    color: #747d8e;
+
+    font-size: 11px;
+
+}
+
+
+.tips span {
+
+    color: #22c55e;
+
+    font-weight: bold;
+
+    margin-right: 6px;
+
+}
+
+
+/* =====================================
+   QUEUE
+===================================== */
+
+.queue-help {
+
+    color: #8b93a3;
+
+    font-size: 11px;
+
+    margin-top: 7px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.clear-btn {
+
+    background: #f4f5f8;
+
+    color: #6d7585;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+.clear-btn:hover {
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+}
+
+
+/* =====================================
+   DOCUMENT LIST
+===================================== */
+
+.document-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 9px;
+
+    max-height: 380px;
+
+    overflow-y: auto;
+
+    padding-right: 3px;
+
+}
+
+
+.empty-state {
+
+    border: 1px dashed #dfe2e9;
+
+    border-radius: 13px;
+
+    padding: 45px 20px;
+
+    text-align: center;
+
+}
+
+
+.empty-state > div {
+
+    font-size: 30px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.empty-state h3 {
+
+    font-size: 14px;
+
+}
+
+
+.empty-state p {
+
+    color: #9aa1af;
+
+    font-size: 11px;
+
+    margin-top: 5px;
+
+}
+
+
+/* =====================================
+   DOCUMENT ITEM
+===================================== */
+
+.document-item {
+
+    display: flex;
 
     align-items: center;
 
     gap: 10px;
+
+    border: 1px solid #e5e8ef;
+
+    border-radius: 12px;
+
+    padding: 10px;
+
+    background: #fbfcfe;
+
+    transition: 0.2s;
+
+}
+
+
+.document-item:hover {
+
+    border-color: #c9c8ff;
+
+    background: #ffffff;
+
+}
+
+
+.document-number {
+
+    width: 28px;
+
+    height: 28px;
+
+    border-radius: 8px;
+
+    background: #f0efff;
+
+    color: #6366f1;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    flex-shrink: 0;
+
+}
+
+
+.document-icon {
+
+    width: 35px;
+
+    height: 35px;
+
+    border-radius: 8px;
+
+    background: #eef2ff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+
+}
+
+
+.document-details {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.document-name {
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.document-size {
+
+    color: #9aa1af;
+
+    font-size: 10px;
+
+    margin-top: 3px;
+
+}
+
+
+/* =====================================
+   MOVE BUTTONS
+===================================== */
+
+.move-buttons {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.move-btn {
+
+    width: 29px;
+
+    height: 25px;
+
+    border-radius: 6px;
+
+    background: #f0f1f5;
+
+    color: #555d6d;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+}
+
+
+.move-btn:hover {
+
+    background: #e0e7ff;
+
+    color: #4338ca;
+
+}
+
+
+.move-btn:disabled {
+
+    opacity: 0.3;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =====================================
+   FILE ACTIONS
+===================================== */
+
+.file-actions {
+
+    display: flex;
+
+    gap: 5px;
+
+}
+
+
+.file-action {
+
+    width: 30px;
+
+    height: 30px;
+
+    border-radius: 7px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 12px;
+
+}
+
+
+.preview-btn {
+
+    background: #eef2ff;
+
+    color: #4338ca;
+
+}
+
+
+.remove-btn {
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+}
+
+
+/* =====================================
+   MERGE
+===================================== */
+
+.merge-area {
+
+    margin-top: 15px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #edf0f4;
+
+}
+
+
+.merge-button {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 10px;
+
+    background: #181c2b;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding-left: 18px;
+
+    padding-right: 18px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+.merge-button:hover {
+
+    background: #2c3347;
+
+}
+
+
+.merge-button:disabled {
+
+    opacity: 0.35;
+
+    cursor: not-allowed;
+
+}
+
+
+/* =====================================
+   MESSAGE
+===================================== */
+
+.message {
+
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 13px 16px;
+
+    border-radius: 10px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+.message.show {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.success {
 
     background: #ecfdf5;
 
@@ -292,704 +958,256 @@ nav {
 
     color: #15803d;
 
-    padding: 12px 16px;
-
-    border-radius: 10px;
-
-    margin-bottom: 18px;
-
-    font-size: 13px;
-
-    font-weight: 600;
-}
-
-.success-message.show {
-    display: flex;
 }
 
 
-/* ======================================
-   CARD
-====================================== */
+/* =====================================
+   RESULT
+===================================== */
 
-.card {
-    background: white;
+.result-panel {
 
-    border: 1px solid #e6e9ef;
-
-    border-radius: 18px;
-
-    padding: 28px;
-
-    box-shadow:
-        0 8px 30px
-        rgba(15, 23, 42, 0.05);
-}
-
-.card-title {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 22px;
-}
-
-.card-title h3 {
-    font-size: 18px;
-}
-
-.card-title p {
-    color: #8a94a6;
-
-    font-size: 13px;
-
-    margin-top: 5px;
-}
-
-.file-count {
-    background: #f1f3f9;
-
-    color: #6366f1;
-
-    padding: 8px 12px;
-
-    border-radius: 9px;
-
-    font-size: 13px;
-}
-
-
-/* ======================================
-   DROP ZONE
-====================================== */
-
-.drop-zone {
-    border: 2px dashed #d7dce7;
-
-    border-radius: 15px;
-
-    padding: 42px 20px;
-
-    text-align: center;
-
-    transition: 0.2s;
-}
-
-.drop-zone.dragover {
-    border-color: #6366f1;
-
-    background: #f5f3ff;
-}
-
-.upload-icon {
-    width: 55px;
-    height: 55px;
-
-    margin: 0 auto 15px;
-
-    border-radius: 15px;
-
-    background: #f0edff;
-
-    color: #6366f1;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 28px;
-}
-
-.drop-zone h3 {
-    font-size: 17px;
-
-    margin-bottom: 7px;
-}
-
-.drop-zone p {
-    color: #8a94a6;
-
-    font-size: 13px;
-
-    margin-bottom: 18px;
-}
-
-.drop-zone small {
-    display: block;
-
-    color: #a0a8b7;
-
-    margin-top: 15px;
-
-    font-size: 11px;
-}
-
-
-/* ======================================
-   BUTTONS
-====================================== */
-
-button {
-    font-family: inherit;
-
-    cursor: pointer;
-
-    border: none;
-}
-
-.primary-btn {
-    background: #6366f1;
-
-    color: white;
-
-    padding: 12px 21px;
-
-    border-radius: 9px;
-
-    font-weight: 600;
-
-    transition: 0.2s;
-}
-
-.primary-btn:hover {
-    background: #4f46e5;
-
-    transform: translateY(-1px);
-}
-
-.secondary-btn {
-    background: #f1f3f7;
-
-    color: #596274;
-
-    padding: 12px 18px;
-
-    border-radius: 9px;
-
-    font-weight: 600;
-}
-
-.secondary-btn:hover {
-    background: #e5e7eb;
-}
-
-.merge-btn {
-    background: #111827;
-
-    color: white;
-
-    padding: 12px 21px;
-
-    border-radius: 9px;
-
-    display: flex;
-
-    gap: 15px;
-
-    font-weight: 600;
-
-    transition: 0.2s;
-}
-
-.merge-btn:hover:not(:disabled) {
-    background: #252d44;
-
-    transform: translateY(-1px);
-}
-
-.merge-btn:disabled {
-    opacity: 0.4;
-
-    cursor: not-allowed;
-}
-
-
-/* ======================================
-   FILE LIST
-====================================== */
-
-.file-list {
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 10px;
-
-    margin-top: 20px;
-}
-
-.file-item {
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 13px;
-
-    border: 1px solid #e6e9ef;
-
-    border-radius: 11px;
-
-    background: #fafbfc;
-
-    transition: 0.2s;
-}
-
-.file-item:hover {
-    border-color: #c7c9ff;
-
-    background: #fdfdff;
-}
-
-
-/* ======================================
-   FILE ICON
-====================================== */
-
-.file-icon {
-    width: 38px;
-    height: 38px;
-
-    border-radius: 9px;
-
-    background: #ede9fe;
-
-    color: #6366f1;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    font-size: 18px;
-}
-
-
-/* ======================================
-   FILE INFO
-====================================== */
-
-.file-info {
-    flex: 1;
-
-    min-width: 0;
-}
-
-.file-name {
-    font-size: 13px;
-
-    font-weight: 600;
-
-    word-break: break-word;
-}
-
-.file-size {
-    color: #929aaa;
-
-    font-size: 11px;
-
-    margin-top: 3px;
-}
-
-
-/* ======================================
-   FILE BUTTONS
-====================================== */
-
-.file-buttons {
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    flex-shrink: 0;
-}
-
-
-/* MOVE UP / DOWN */
-
-.move-file {
-    width: 34px;
-    height: 34px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 8px;
-
-    background: #f1f5f9;
-
-    color: #475569;
-
-    font-size: 16px;
-
-    font-weight: bold;
-
-    transition: 0.2s;
-}
-
-.move-file:hover:not(:disabled) {
-    background: #e0e7ff;
-
-    color: #4f46e5;
-}
-
-.move-file:disabled {
-    opacity: 0.3;
-
-    cursor: not-allowed;
-}
-
-
-/* VIEW */
-
-.view-file {
-    background: #eef2ff;
-
-    color: #4f46e5;
-
-    padding: 8px 11px;
-
-    border-radius: 8px;
-
-    font-size: 12px;
-
-    font-weight: 600;
-}
-
-.view-file:hover {
-    background: #e0e7ff;
-}
-
-
-/* REMOVE */
-
-.remove-file {
-    background: #fee2e2;
-
-    color: #dc2626;
-
-    padding: 8px 11px;
-
-    border-radius: 8px;
-
-    font-size: 12px;
-
-    font-weight: 600;
-}
-
-.remove-file:hover {
-    background: #fecaca;
-}
-
-
-/* ======================================
-   MERGED FILE
-====================================== */
-
-.merged-file-area {
     display: none;
 
     margin-top: 20px;
 
-    padding: 17px;
-
-    border: 1px solid #bbf7d0;
+    padding: 20px;
 
     background: #f0fdf4;
 
-    border-radius: 12px;
+    border: 1px solid #bbf7d0;
+
+    border-radius: 15px;
 
     align-items: center;
-
-    justify-content: space-between;
 
     gap: 15px;
+
 }
 
-.merged-file-area.show {
+
+.result-panel.show {
+
     display: flex;
+
 }
 
-.merged-info {
-    display: flex;
 
-    align-items: center;
+.result-icon {
 
-    gap: 12px;
-}
+    width: 44px;
 
-.merged-icon {
-    width: 42px;
-    height: 42px;
+    height: 44px;
 
-    border-radius: 10px;
+    border-radius: 11px;
 
     background: #dcfce7;
+
+    color: #15803d;
 
     display: flex;
 
     align-items: center;
 
     justify-content: center;
+
+    font-weight: 900;
+
 }
 
-.merged-info h3 {
-    font-size: 14px;
+
+.result-info {
+
+    flex: 1;
+
 }
 
-.merged-info p {
+
+.result-info > span {
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    color: #16a34a;
+
+    letter-spacing: 1px;
+
+}
+
+
+.result-info h2 {
+
+    font-size: 15px;
+
+    margin-top: 4px;
+
+}
+
+
+.result-info p {
+
     color: #6b7280;
 
     font-size: 11px;
 
     margin-top: 4px;
+
 }
 
-.merged-actions {
+
+.result-buttons {
+
     display: flex;
 
-    gap: 8px;
+    gap: 7px;
+
 }
 
-.view-merged-btn {
+
+.view-button,
+.download-button {
+
+    padding: 10px 13px;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+.view-button {
+
     background: #e0e7ff;
 
     color: #4338ca;
 
-    padding: 10px 13px;
-
-    border-radius: 8px;
-
-    font-size: 12px;
-
-    font-weight: 600;
 }
 
-.view-merged-btn:hover {
-    background: #c7d2fe;
-}
 
-.download-btn {
-    background: #166534;
+.download-button {
+
+    background: #15803d;
 
     color: white;
 
-    padding: 10px 13px;
-
-    border-radius: 8px;
-
-    font-size: 12px;
-
-    font-weight: 600;
-}
-
-.download-btn:hover {
-    background: #14532d;
 }
 
 
-/* ======================================
-   ACTIONS
-====================================== */
-
-.actions {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-top: 20px;
-}
-
-
-/* ======================================
-   INFO CARDS
-====================================== */
-
-.info-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 15px;
-
-    margin-top: 20px;
-}
-
-.info-card {
-    background: white;
-
-    border: 1px solid #e6e9ef;
-
-    border-radius: 15px;
-
-    padding: 20px;
-}
-
-.info-icon {
-    font-size: 20px;
-
-    margin-bottom: 12px;
-}
-
-.info-card h3 {
-    font-size: 14px;
-
-    margin-bottom: 7px;
-}
-
-.info-card p {
-    color: #8992a3;
-
-    font-size: 12px;
-
-    line-height: 1.5;
-}
-
-
-/* ======================================
+/* =====================================
    FOOTER
-====================================== */
+===================================== */
 
 footer {
+
     text-align: center;
 
-    color: #9aa2b1;
+    color: #9ca3af;
 
-    font-size: 11px;
+    font-size: 10px;
 
     padding: 25px;
 
-    margin-top: auto;
 }
 
 
-/* ======================================
+/* =====================================
    MOBILE
-====================================== */
+===================================== */
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
 
-    .sidebar {
-        position: relative;
+    .workspace {
 
-        width: 100%;
-
-        height: auto;
-    }
-
-    .sidebar-bottom {
-        display: none;
-    }
-
-    .main {
-        margin-left: 0;
-    }
-
-    .header {
-        padding: 0 20px;
-    }
-
-    .header-right {
-        display: none;
-    }
-
-    .content {
-        padding: 25px 15px;
-    }
-
-    .info-grid {
         grid-template-columns: 1fr;
+
     }
 
-    .hero h2 {
-        font-size: 28px;
-    }
-
-    .file-item {
-        align-items: flex-start;
-    }
-
-    .file-buttons {
-        flex-wrap: wrap;
-
-        justify-content: flex-end;
-    }
-
-    .merged-file-area {
-        flex-direction: column;
-
-        align-items: stretch;
-    }
-
-    .merged-actions {
-        flex-direction: column;
-    }
-
-    .merged-actions button {
-        width: 100%;
-    }
 }
 
 
-/* ======================================
-   SMALL MOBILE
-====================================== */
+@media (max-width: 650px) {
 
-@media (max-width: 500px) {
+    .topbar {
 
-    .header {
-        height: 70px;
+        padding: 0 18px;
+
     }
 
-    .header h1 {
-        font-size: 19px;
+
+    .top-status {
+
+        display: none;
+
     }
 
-    .hero {
-        padding: 25px;
+
+    .dashboard {
+
+        padding: 25px 15px;
+
     }
 
-    .card {
+
+    .page-heading h1 {
+
+        font-size: 27px;
+
+    }
+
+
+    .stats {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .upload-panel,
+    .queue-panel {
+
         padding: 18px;
+
     }
 
-    .drop-zone {
-        padding: 30px 15px;
-    }
 
-    .actions {
-        gap: 10px;
-    }
+    .document-item {
 
-    .actions button {
-        flex: 1;
-    }
-
-    .file-item {
         flex-wrap: wrap;
+
     }
 
-    .file-info {
-        width: calc(100% - 55px);
+
+    .document-details {
+
+        min-width: 120px;
+
     }
 
-    .file-buttons {
+
+    .result-panel {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+
+    .result-buttons {
+
         width: 100%;
 
-        margin-top: 5px;
-
-        justify-content: flex-end;
     }
+
+
+    .result-buttons button {
+
+        flex: 1;
+
+    }
+
 }
