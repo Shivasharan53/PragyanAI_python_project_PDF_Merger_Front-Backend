@@ -42,7 +42,7 @@ def home():
 
 
 # ======================================
-# MERGE FILES
+# MERGE
 # ======================================
 
 @app.post("/merge")
@@ -62,7 +62,7 @@ async def merge_files(
 
 
     # ==================================
-    # PROCESS FILES IN RECEIVED ORDER
+    # PROCESS FILES IN ORDER
     # ==================================
 
     for uploaded_file in files:
@@ -93,14 +93,11 @@ async def merge_files(
                     writer.add_page(page)
 
 
-            except Exception:
+            except Exception as error:
 
                 raise HTTPException(
                     status_code=400,
-                    detail=(
-                        f"Invalid PDF: "
-                        f"{uploaded_file.filename}"
-                    )
+                    detail=f"Invalid PDF: {uploaded_file.filename}"
                 )
 
 
@@ -146,34 +143,24 @@ async def merge_files(
                     writer.add_page(page)
 
 
-            except Exception:
+            except Exception as error:
 
                 raise HTTPException(
                     status_code=400,
-                    detail=(
-                        f"Invalid image: "
-                        f"{uploaded_file.filename}"
-                    )
+                    detail=f"Invalid image: {uploaded_file.filename}"
                 )
 
-
-        # ==================================
-        # UNSUPPORTED FILE
-        # ==================================
 
         else:
 
             raise HTTPException(
                 status_code=400,
-                detail=(
-                    f"Unsupported file: "
-                    f"{uploaded_file.filename}"
-                )
+                detail=f"Unsupported file: {uploaded_file.filename}"
             )
 
 
     # ==================================
-    # CREATE MERGED PDF
+    # CHECK PAGES
     # ==================================
 
     if len(writer.pages) == 0:
@@ -184,6 +171,10 @@ async def merge_files(
         )
 
 
+    # ==================================
+    # CREATE OUTPUT
+    # ==================================
+
     output = io.BytesIO()
 
 
@@ -193,7 +184,7 @@ async def merge_files(
 
 
     # ==================================
-    # RETURN PDF
+    # RESPONSE
     # ==================================
 
     return Response(
