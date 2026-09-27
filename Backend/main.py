@@ -1,69 +1,108 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
+
 from pypdf import PdfReader, PdfWriter
 from PIL import Image
+
 import io
 
 
+# =========================================
+# APP
+# =========================================
+
 app = FastAPI(
-    title="PragyanAI PDF Merger API"
+    title="PragyanAI Document Flow API",
+    version="2.0.0"
 )
 
 
-# ======================================
+# =========================================
 # CORS
-# ======================================
+# =========================================
 
 app.add_middleware(
     CORSMiddleware,
+
     allow_origins=[
         "https://shiva-pdfmerge-project.netlify.app",
         "https://pdf-image-merge-project.netlify.app",
         "http://localhost:5500",
         "http://127.0.0.1:5500"
     ],
+
     allow_credentials=True,
+
     allow_methods=["*"],
-    allow_headers=["*"],
+
+    allow_headers=["*"]
 )
 
 
-# ======================================
+# =========================================
 # HOME
-# ======================================
+# =========================================
 
 @app.get("/")
 def home():
 
     return {
-        "message": "PragyanAI PDF Merger API is running"
+        "status": "success",
+        "message": "PragyanAI Document Flow API is running"
     }
 
 
-# ======================================
-# MERGE
-# ======================================
+# =========================================
+# HEALTH CHECK
+# =========================================
+
+@app.get("/health")
+def health():
+
+    return {
+        "status": "healthy"
+    }
+
+
+# =========================================
+# MERGE FILES
+# =========================================
 
 @app.post("/merge")
 async def merge_files(
     files: list[UploadFile] = File(...)
 ):
 
+    # -------------------------------------
+    # CHECK FILES
+    # -------------------------------------
+
     if not files:
 
         raise HTTPException(
             status_code=400,
-            detail="No files uploaded"
+            detail="No files uploaded."
         )
 
+
+    # -------------------------------------
+    # PDF WRITER
+    # -------------------------------------
 
     writer = PdfWriter()
 
 
-    # ==================================
-    # PROCESS FILES IN ORDER
-    # ==================================
+    # -------------------------------------
+    # PROCESS FILES
+    #
+    # IMPORTANT:
+    # Files are processed in the exact
+    # order received from frontend.
+    #
+    # Frontend Move Up / Move Down
+    # therefore controls final PDF order.
+    # -------------------------------------
 
     for uploaded_file in files:
 
@@ -72,12 +111,14 @@ async def merge_files(
         ).lower()
 
 
-        file_bytes = await uploaded_file.read()
+        file_bytes = (
+            await uploaded_file.read()
+        )
 
 
-        # ==================================
+        # =================================
         # PDF
-        # ==================================
+        # =================================
 
         if filename.endswith(".pdf"):
 
@@ -97,13 +138,16 @@ async def merge_files(
 
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Invalid PDF: {uploaded_file.filename}"
+                    detail=(
+                        f"Invalid PDF: "
+                        f"{uploaded_file.filename}"
+                    )
                 )
 
 
-        # ==================================
+        # =================================
         # IMAGE
-        # ==================================
+        # =================================
 
         elif filename.endswith(
             (".jpg", ".jpeg", ".png")
@@ -116,9 +160,12 @@ async def merge_files(
                 )
 
 
+                # Convert image to RGB
                 if image.mode != "RGB":
 
-                    image = image.convert("RGB")
+                    image = image.convert(
+                        "RGB"
+                    )
 
 
                 image_pdf = io.BytesIO()
@@ -147,51 +194,65 @@ async def merge_files(
 
                 raise HTTPException(
                     status_code=400,
-                    detail=f"Invalid image: {uploaded_file.filename}"
+                    detail=(
+                        f"Invalid image: "
+                        f"{uploaded_file.filename}"
+                    )
                 )
 
+
+        # =================================
+        # UNSUPPORTED
+        # =================================
 
         else:
 
             raise HTTPException(
                 status_code=400,
-                detail=f"Unsupported file: {uploaded_file.filename}"
+                detail=(
+                    f"Unsupported file: "
+                    f"{uploaded_file.filename}"
+                )
             )
 
 
-    # ==================================
-    # CHECK PAGES
-    # ==================================
+    # =========================================
+    # CHECK OUTPUT
+    # =========================================
 
     if len(writer.pages) == 0:
 
         raise HTTPException(
             status_code=400,
-            detail="No pages found in uploaded files"
+            detail="No valid pages found."
         )
 
 
-    # ==================================
+    # =========================================
     # CREATE OUTPUT
-    # ==================================
+    # =========================================
 
     output = io.BytesIO()
 
 
     writer.write(output)
 
+
     output.seek(0)
 
 
-    # ==================================
+    # =========================================
     # RESPONSE
-    # ==================================
+    # =========================================
 
     return Response(
+
         content=output.getvalue(),
+
         media_type="application/pdf",
+
         headers={
             "Content-Disposition":
-                'attachment; filename="PragyanAI_Merged.pdf"'
+            'attachment; filename="PragyanAI_Merged.pdf"'
         }
     )
