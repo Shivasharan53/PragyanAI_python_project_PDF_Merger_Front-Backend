@@ -28,6 +28,7 @@ app.add_middleware(
     allow_origins=[
         "https://shiva-pdfmerge-project.netlify.app",
         "https://pdf-image-merge-project.netlify.app",
+        "https://app.netlify.com/projects/pdf-image-merger/overview",
         "http://localhost:5500",
         "http://127.0.0.1:5500"
     ],
