@@ -438,4 +438,3 @@ async def merge_files(
                 "Content-Disposition"
         }
     )
-```
