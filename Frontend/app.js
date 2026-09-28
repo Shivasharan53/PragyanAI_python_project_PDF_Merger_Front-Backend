@@ -54,7 +54,7 @@ const downloadBtn =
 */
 
 const BACKEND_URL =
-    "https://pragyanai-python-project-pdf-merger-6mtj.onrender.com/";
+    "https://pragyanai-python-project-pdf-merger-6mtj.onrender.com";
 
 
 /* =========================================
